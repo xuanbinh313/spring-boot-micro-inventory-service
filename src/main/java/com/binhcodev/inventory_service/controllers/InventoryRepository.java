@@ -11,4 +11,9 @@ public class InventoryRepository {
     public String getInventories() {
         return "All inventories";
     }
+
+    @GetMapping("/create")
+    public String createInventory() {
+        return "Inventory created";
+    }
 }
