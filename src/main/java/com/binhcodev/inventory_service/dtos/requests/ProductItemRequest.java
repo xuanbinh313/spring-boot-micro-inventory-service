@@ -1,4 +1,4 @@
-package com.binhcodev.inventory_service.requests;
+package com.binhcodev.inventory_service.dtos.requests;
 
 import java.math.BigDecimal;
 import java.util.Map;
