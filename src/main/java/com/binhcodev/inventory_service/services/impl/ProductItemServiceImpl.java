@@ -3,6 +3,7 @@ package com.binhcodev.inventory_service.services.impl;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -50,11 +51,16 @@ public class ProductItemServiceImpl implements ProductItemService {
         List<ProductConfiguration> productConfigurations = productConfigurationRepository
                 .findAllByProductItemIn(productItems);
         List<ProductItemResponse> productItemResponses = productItems.stream()
-                .map(productItem -> ProductItemResponse
-                        .builder()
-                        .productItem(productItem)
-                        .productConfigurations(productConfigurations)
-                        .build())
+                .map(productItem -> {
+                    List<ProductConfiguration> productConfigurationsFilter = productConfigurations.stream()
+                            .filter(it -> it.getProductItem().getId() == productItem.getId()).toList();
+                    List<String> ids = productConfigurationsFilter.stream().map(it -> it.getVariationOptionId()).toList();
+                    return ProductItemResponse
+                            .builder()
+                            .productItem(productItem)
+                            .variationOptions(ids)
+                            .build();
+                })
                 .toList();
         return productItemResponses;
     }
